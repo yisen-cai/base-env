@@ -1,0 +1,76 @@
+version: '3.9'
+
+services:
+  mysql:
+    restart: always
+    image: mysql:8.0.29
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/:/var/lib/mysql
+    networks:
+      - env-network
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_USER=yisen-cai
+      - MYSQL_DATABASE=base-env
+
+  mysql-admin:
+    restart: always
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - "8001:80"
+    mem_limit: 512m
+    networks:
+      - env-network
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+
+  redis:
+    restart: always
+    image: redis:7.0.2
+    container_name: redis
+    command: /bin/bash -c 'redis-server --appendonly yes'
+    sysctls:
+      - net.core.somaxconn=65535
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis:/data
+    mem_limit: 96m
+    networks:
+      - env-network
+
+  postgres:
+    image: postgres:14.3-1
+    restart: always
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - ./postgres:/var/lib/postgresql/data
+    networks:
+      - env-network
+
+volumes:
+  mysql:
+    driver: local
+  redis:
+    driver: local
+  postgres:
+    driver: local
+
+networks:
+  env-network:
+    driver: bridge
