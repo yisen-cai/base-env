@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  mysql-admin:
+    restart: always
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin 
+    ports:
+      - "8001:80"
+    mem_limit: 512m
+    depends_on:
+      - mysql
+    networks:
+      - env-network
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+
+
+  zoonavigator:
+    container_name: zoonavigator
+    image: elkozmon/zoonavigator
+    ports:
+      - 9000:9000
+    networks:
+      - env-network
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+
+
+volumes:
+  mysql:
+    driver: local
+  redis:
+    driver: local
+  postgres:
+    driver: local
+  mongo:
+    driver: local
+  kafka:
+    driver: local
+
+networks:
+  env-network:
+    driver: bridge

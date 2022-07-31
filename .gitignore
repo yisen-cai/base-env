@@ -6,3 +6,4 @@ mysql/
 redis/
 postgres/
 kafka*/
+mongo/
