@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  elasticsearch:
+    restart: always
+    image: elasticsearch:7.17.5
+    container_name: elasticsearch
+    ports:
+      - 9200:9200
+    volumes:
+      - ./mysql/:/var/lib/mysql
+    networks:
+      - env-network
+    environment:
+      - xpack.security.enabled=false
+      - "discovery.type=single-node"
+
+  kibana:
+    container_name: kibana
+    image: kibana:7.17.5
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    networks:
+      - env-network
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5601:5601
+
+volumes:
+  mysql:
+    driver: local
+  redis:
+    driver: local
+  postgres:
+    driver: local
+  mongo:
+    driver: local
+  kafka:
+    driver: local
+
+networks:
+  env-network:
+    driver: bridge
