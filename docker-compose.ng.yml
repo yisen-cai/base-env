@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  web:
+    image: nginx
+    volumes:
+    - ./nginx:/etc/nginx/templates
+    ports:
+    - "443:443"
+    environment:
+    - NGINX_HOST=foobar.com
+    - NGINX_PORT=443
