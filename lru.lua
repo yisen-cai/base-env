@@ -5,8 +5,9 @@ repeat
     for d = 1, #c do
         local e = c[d]
         local f = redis.call('OBJECT', 'IDLETIME', e)
-        if f > 60 * 60 * 24 then
-            redis.call('DEL', e)
+        if f > 20 then
+            local g = math.random(3000, 6000)
+            redis.call('EXPIRE', e, g)
         end
     end
     a = b[1]
