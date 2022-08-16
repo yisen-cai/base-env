@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  redis:
+    restart: always
+    image: redis:7.0.2
+    container_name: redis
+    command: /bin/bash -c 'redis-server --appendonly yes'
+    sysctls:
+      - net.core.somaxconn=65535
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis:/data
+    mem_limit: 96m
+    networks:
+      - env-network
+
+volumes:
+  redis:
+    driver: local
+
+networks:
+  env-network:
+    driver: bridge
