@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  gitlab-runner:
+    restart: always
+    image: gitlab/gitlab-runner:latest
+    container_name: gitlab-runner
+    volumes:
+      - /srv/gitlab-runner/config:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - env-network
+    # environment:
+    #   - MYSQL_ROOT_PASSWORD=root
+    #   - MYSQL_PASSWORD=root
+    #   - MYSQL_USER=yisen-cai
+    #   - MYSQL_DATABASE=base-env
+
+volumes:
+  mysql:
+    driver: local
+  redis:
+    driver: local
+  postgres:
+    driver: local
+  mongo:
+    driver: local
+  kafka:
+    driver: local
+
+networks:
+  env-network:
+    driver: bridge
