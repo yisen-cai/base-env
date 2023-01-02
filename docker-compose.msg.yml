@@ -5,14 +5,10 @@ services:
   kafka1:
     image: 'bitnami/kafka:3.2'
     ports:
-      - '9091:9092'
+      - '9191:9092'
     container_name: kafka1
     volumes:
       - ./kafka1/:/bitnami/kafka1
-    depends_on:
-      - zoo1
-      - zoo2
-      - zoo3
     networks:
       - env-network
     environment:
@@ -31,14 +27,10 @@ services:
   kafka2:
     image: 'bitnami/kafka:3.2'
     ports:
-      - '9092:9092'
+      - '9192:9092'
     container_name: kafka2
     volumes:
       - ./kafka2/:/bitnami/kafka2
-    depends_on:
-      - zoo1
-      - zoo2
-      - zoo3
     networks:
       - env-network
     environment:
@@ -51,14 +43,10 @@ services:
   kafka3:
     image: 'bitnami/kafka:3.2'
     ports:
-      - '9093:9092'
+      - '9193:9092'
     container_name: kafka3
     volumes:
       - ./kafka3/:/bitnami/kafka3
-    depends_on:
-      - zoo1
-      - zoo2
-      - zoo3
     networks:
       - env-network
     environment:
